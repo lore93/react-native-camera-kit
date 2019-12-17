@@ -9,10 +9,9 @@ import android.hardware.Camera;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.provider.MediaStore;
+import androidx.annotation.Nullable;
 import android.util.Log;
 import android.util.Patterns;
-
-import androidx.annotation.Nullable;
 
 import com.drew.imaging.ImageMetadataReader;
 import com.drew.imaging.ImageProcessingException;
@@ -161,7 +160,8 @@ public class SaveImageTask extends AsyncTask<byte[], Void, Void> {
     }
 
     private Bitmap rotateImage(Bitmap image, Matrix bitmapMatrix) {
-        return Bitmap.createBitmap(image, 0, 0, image.getWidth(), image.getHeight(), bitmapMatrix, false);
+        Bitmap bitmap =  Bitmap.createBitmap(image, 0, 0, image.getWidth(), image.getHeight(), bitmapMatrix, false);
+        return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight()*2/3);
     }
 
     private Matrix getRotationMatrix(byte[] rawImageData) {
@@ -186,17 +186,21 @@ public class SaveImageTask extends AsyncTask<byte[], Void, Void> {
     }
 
     private void convertExifOrientationToMatrix(Matrix matrix, int exifOrientation, boolean isCameraFacingFront) {
+        Log.d("EXIF ORIENTATION", ""+exifOrientation);
         switch (exifOrientation) {
             case 1:
+                matrix.postRotate(90);
                 break;  // top left
             case 2:
+                matrix.postRotate(90);
                 matrix.postScale(-1, 1);
                 break;  // top right
             case 3:
-                matrix.postRotate(180);
+                matrix.postRotate(90);
                 break;  // bottom right
             case 4:
-                matrix.postRotate(180);
+                //matrix.postRotate(180);
+                matrix.postRotate(90);
                 matrix.postScale(-1, 1);
                 break;  // bottom left
             case 5:
@@ -207,11 +211,11 @@ public class SaveImageTask extends AsyncTask<byte[], Void, Void> {
                 matrix.postRotate(90);
                 break;  // right top
             case 7:
-                matrix.postRotate(270);
+                matrix.postRotate(90);
                 matrix.postScale(-1, 1);
                 break;  // right bottom
             case 8:
-                matrix.postRotate(270);
+                matrix.postRotate(90);
                 break;  // left bottom
             default:
                 break;  // Unknown
