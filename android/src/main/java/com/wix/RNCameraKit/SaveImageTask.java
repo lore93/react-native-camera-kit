@@ -161,7 +161,7 @@ public class SaveImageTask extends AsyncTask<byte[], Void, Void> {
 
     private Bitmap rotateImage(Bitmap image, Matrix bitmapMatrix) {
         Bitmap bitmap =  Bitmap.createBitmap(image, 0, 0, image.getWidth(), image.getHeight(), bitmapMatrix, false);
-        return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight()*2/3);
+        return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight()*6/10);
     }
 
     private Matrix getRotationMatrix(byte[] rawImageData) {
